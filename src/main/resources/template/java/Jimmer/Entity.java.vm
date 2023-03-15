@@ -1,0 +1,36 @@
+#if($moduleName != "")
+package ${packageName}.${moduleName}.entity
+#else
+package ${packageName}.entity
+#end
+import org.babyfish.jimmer.sql.Entity
+import org.babyfish.jimmer.sql.Column
+import org.babyfish.jimmer.sql.GeneratedValue
+import org.babyfish.jimmer.sql.Table
+import org.babyfish.jimmer.sql.meta.IdGenerator
+/**
+ * ${tableComment}
+ *
+ * @author ${author} ${email}
+ * @since ${version} ${date}
+ */
+@Entity
+@Table(name = "${tableName}")
+public interface  ${ClassName}Entity {
+#foreach($field in $fieldList)
+
+#if($field.fieldComment!="")
+        /**
+         * $field.fieldComment
+         */
+#end
+#if($field.fieldName == "id" )
+        @GeneratedValue(generatorType = IdGenerator::class)
+#end
+#if($field.fieldName != "id" )
+        @Column(name = "$field.fieldName")
+#end
+        private   $!{field.fieldJavaType}  $!{field.fieldTName}();
+#end
+
+}

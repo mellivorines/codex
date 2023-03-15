@@ -1,0 +1,12 @@
+{
+  "project": "codex",
+  "module": "codex",
+  "packageName": "com.mellivorines.codex",
+  "version": "codex",
+  "openApi": true,
+  "creator": {
+    "author": "lilinxi",
+    "email": "lilinxi015@163.com",
+    "phone": "1234221131"
+  }
+}

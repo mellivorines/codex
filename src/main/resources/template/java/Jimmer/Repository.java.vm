@@ -1,0 +1,23 @@
+#if($moduleName != "")
+package ${packageName}.${moduleName}.repository;
+
+import ${packageName}.${moduleName}.entity.${ClassName}Entity;
+#else
+package ${packageName}.repository;
+import ${packageName}.entity.${ClassName}Entity;
+#end
+import org.babyfish.jimmer.spring.repository.JRepository;
+import org.springframework.stereotype.Repository;
+
+/**
+ * <p>
+ * ${tableComment}Repository 接口
+ * </p>
+ * @author ${author} ${email}
+ * @since ${version} ${date}
+ */
+@Repository
+public interface ${ClassName}Repository extends JRepository<${ClassName}Entity, Long> {
+
+}
+

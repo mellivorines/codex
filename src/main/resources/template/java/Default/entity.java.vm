@@ -1,0 +1,30 @@
+#if($moduleName != "")
+package ${packageName}.${moduleName}.entity;
+#else
+package ${packageName}.entity;
+#end
+import lombok.Data;
+import java.util.Date;
+import java.io.Serializable;
+
+/**
+ * ${tableComment}(${tableName}) 实体类
+ *
+ * @author ${author} ${email}
+ * @since ${version} ${date}
+ */
+@Data
+public class ${ClassName}Entity implements Serializable {
+        private static final long serialVersionUID = 906429098329224227L;
+#foreach($field in $fieldList)
+
+#if($field.fieldComment!="")
+        /**
+         * $field.fieldComment
+         */
+#end
+        private   $!{field.fieldJavaType}  $!{field.fieldTName}();
+#end
+
+}
+

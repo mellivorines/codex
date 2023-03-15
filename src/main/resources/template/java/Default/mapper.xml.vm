@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+#if($moduleName != "")
+<mapper namespace="${packageName}.${moduleName}.dao.${ClassName}Dao">
+<resultMap type="${packageName}.${moduleName}.entity.${ClassName}Entity" id="${ClassName}EntityMap">
+#else
+<mapper namespace="${packageName}.dao.${ClassName}Dao">
+<resultMap type="${packageName}.entity.${ClassName}Entity" id="${ClassName}EntityMap">
+#end
+#foreach($field in $fieldList)
+    <result property="$!{field.fieldTName}" column="$!{field.fieldName}" jdbcType="$!{field.fieldType}"/>
+#end
+
+</resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="${ClassName}EntityMap">
+        select
+            #foreach($field in $fieldList)
+                $!{field.fieldName} #if($velocityHasNext),#end
+            #end
+
+        from ${tableName}
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="${ClassName}EntityMap">
+        select
+        #foreach($field in $fieldList)
+            $!{field.fieldName} #if($velocityHasNext),#end
+        #end
+
+        from ${tableName}
+        <where>
+            1=1
+            #foreach($field in $fieldList)
+                <if test="${field.fieldTName} != null#if($field.fieldJavaType.equals(
+                    "String")) and ${field.fieldTName} != ''#end">
+                    and $!{field.fieldName} = #{$!{field.fieldTName}}
+                </if>
+            #end
+        </where>
+        limit #{pageable.offset}, #{pageable.pageSize}
+    </select>
+
+    <!--统计总行数-->
+    <select id="count" resultType="java.lang.Long">
+        select count(1)
+        from ${tableName}
+        <where>
+            1=1
+            #foreach($field in $fieldList)
+                <if test="${field.fieldTName} != null#if($field.fieldJavaType.equals(
+                    "String")) and ${field.fieldTName} != ''#end">
+                    and $!{field.fieldName} = #{$!{field.fieldTName}}
+                </if>
+            #end
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into $!{tableName}(
+            #foreach($field in $fieldList)
+                $!{field.fieldName} #if($velocityHasNext),#end
+            #end
+        )
+        values (
+                   #foreach($field in $fieldList)
+                           #{$!{field.fieldTName}} #if($velocityHasNext),#end
+                   #end
+               )
+    </insert>
+
+    <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into $!{tableName}(
+        #foreach($field in $fieldList)
+            $!{field.fieldName} #if($velocityHasNext),#end
+        #end
+        )
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (
+            #foreach($field in $fieldList)
+                #{entity.$!{field.fieldTName}} #if($velocityHasNext),#end
+            #end
+            )
+        </foreach>
+    </insert>
+
+    <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
+        insert into $!{tableName}(
+        #foreach($field in $fieldList)
+            $!{field.fieldName} #if($velocityHasNext),#end
+        #end
+        )
+        values
+        <foreach collection="entities" item="entity" separator=",">
+            (
+            #foreach($field in $fieldList)
+                #{entity.$!{field.fieldTName}} #if($velocityHasNext),#end
+            #end
+            )
+        </foreach>
+        on duplicate key update
+        #foreach($field in $fieldList)
+            $!{field.fieldName} = values($!{field.fieldName})#if($velocityHasNext),#end
+        #end
+
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update ${tableName}
+        <set>
+            1=1
+            #foreach($field in $fieldList)
+                <if test="${field.fieldTName} != null#if($field.fieldJavaType.equals(
+                    "String")) and ${field.fieldTName} != ''#end">
+                    and ${field.fieldName} = #{$!{field.fieldTName}}
+                </if>
+            #end
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete
+        from ${tableName} where id = #{id}
+    </delete>
+
+</mapper>

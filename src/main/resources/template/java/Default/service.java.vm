@@ -1,0 +1,60 @@
+#if($moduleName != "")
+package ${packageName}.${moduleName}.service;
+import ${packageName}.${moduleName}.entity.${ClassName}Entity;
+#else
+package ${packageName}.service;
+import ${packageName}.entity.${ClassName}Entity;
+#end
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+
+/**
+ * ${tableComment}(${tableName})表服务接口
+ *
+ * @author ${author} ${email}
+ * @since ${version} ${date}
+ */
+public interface ${ClassName}Service {
+
+    /**
+     * 通过ID查询单条数据
+     *
+     * @param id 主键
+     * @return 实例对象
+     */
+    ${ClassName}Entity queryById(Long id);
+
+    /**
+     * 分页查询
+     *
+     * @param ${className}Entity 筛选条件
+     * @param pageRequest      分页对象
+     * @return 查询结果
+     */
+    Page<${ClassName}Entity> queryByPage(${ClassName}Entity ${className}Entity), PageRequest pageRequest);
+
+    /**
+     * 新增数据
+     *
+     * @param ${className}Entity 实例对象
+     * @return 实例对象
+     */
+    ${ClassName}Entity insert(${ClassName}Entity ${className}Entity));
+
+    /**
+     * 修改数据
+     *
+     * @param ${className}Entity 实例对象
+     * @return 实例对象
+     */
+    ${ClassName}Entity update(${ClassName}Entity ${className}Entity));
+
+    /**
+     * 通过主键删除数据
+     *
+     * @param id 主键
+     * @return 是否成功
+     */
+    boolean deleteById(Long id);
+
+}

@@ -1,0 +1,74 @@
+{
+  "typeMappings": [
+    {
+      "column": "^boolean$|^bit(\\(1\\))?$|^bool$",
+      "java": "Boolean",
+      "kotlin": "Boolean"
+    },
+    {
+      "column": "^int2$|^smallserial$|^smallint$",
+      "java": "Short",
+      "kotlin": "Short"
+    },
+    {
+      "column": "^int(\\(\\d+\\))?$|^integer(\\(\\d+\\))?$|^int4$|^serial$|^bit\\((\\d+)\\)$|number$|tinyint",
+      "java": "Integer",
+      "kotlin": "Int"
+    },
+    {
+      "column": "^float4?$|^real$",
+      "java": "Float",
+      "kotlin": "Float"
+    },
+    {
+      "column": "^double precision$|^float8$",
+      "java": "Double",
+      "kotlin": "Double"
+    },
+    {
+      "column": "^int8$|^serial8$|^bigserial$|^oid$|^bigint$",
+      "java": "Long",
+      "kotlin": "Long"
+    },
+    {
+      "column": "^name(\\(\\d+\\))?$|^text$|^n?varchar2?(\\(\\d+\\))?$|^(n|bp)?char(\\(\\d+\\))?$|^json$|^jsonb$|^clob$",
+      "java": "String",
+      "kotlin": "String"
+    },
+    {
+      "column": "^bytea$|^(var)?binary(\\(\\d+\\))?$|^blob$|^tinyblob$|^mediumblob$|^longblob$",
+      "java": "byte[]",
+      "kotlin": "ByteArray"
+    },
+    {
+      "column": "^date$",
+      "java": "java.time.LocalDate",
+      "kotlin": "java.time.LocalDate"
+    },
+    {
+      "column": "^time$",
+      "java": "java.time.LocalTime",
+      "kotlin": "java.time.LocalTime"
+    },
+    {
+      "column": "^timetz$",
+      "java": "java.time.OffsetTime",
+      "kotlin": "java.time.OffsetTime"
+    },
+    {
+      "column": "^datetime$|^timestamp$",
+      "java": "java.time.LocalDateTime",
+      "kotlin": "java.time.LocalDateTime"
+    },
+    {
+      "column": "^timestamptz$",
+      "java": "java.time.OffsetDateTime",
+      "kotlin": "java.time.OffsetDateTime"
+    },
+    {
+      "column": "^dec$|^decimal$|^numeric$",
+      "java": "java.math.BigDecimal",
+      "kotlin": "java.math.BigDecimal"
+    }
+  ]
+}
