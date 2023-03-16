@@ -40,7 +40,7 @@ object TemplateUtils {
             val stringReader = StringReader(content)
             val stringWriter = StringWriter()
             try {
-                var template = Template(templateName, stringReader, null, UTF_8.toString())
+                val template = Template(templateName, stringReader, null, UTF_8.toString())
                 template.process(dataModel, stringWriter)
             } catch (e: Exception) {
                 logger.error(e.message)

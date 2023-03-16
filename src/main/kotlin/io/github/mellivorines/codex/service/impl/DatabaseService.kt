@@ -35,7 +35,7 @@ class DatabaseService : DatabaseService {
         val databaseName = getDatabaseName(dataSource)
         val schema: String? = getSchema((dataSource as HikariDataSource).driverClassName)
         val connection = getConnection(dataSource) ?: return null
-        var result = ArrayList<Table>()
+        val result = ArrayList<Table>()
         var resultSet: ResultSet? = null
         try {
             connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)
@@ -43,7 +43,7 @@ class DatabaseService : DatabaseService {
             //目录名称, 数据库名, 表名称, 表类型
             resultSet = meta.getTables(catalog(databaseName), schema, tableNamePattern(), types())
             while (resultSet?.next()!!) {
-                var table = Table(
+                val table = Table(
                     resultSet.getString(CommonConstant.TABLE_NAME),
                     resultSet.getString(CommonConstant.REMARKS),
                     resultSet.getString(CommonConstant.TABLE_NAME).sneak2camel(),
@@ -58,7 +58,7 @@ class DatabaseService : DatabaseService {
             close(connection, null, resultSet)
         }
         for (table in result) {
-            var tableFields = getTableFields(table.tableName)
+            val tableFields = getTableFields(table.tableName)
             table.tableField = tableFields
         }
         return result
@@ -79,13 +79,13 @@ class DatabaseService : DatabaseService {
         val databaseName = getDatabaseName(dataSource)
         val schema: String? = this.getSchema((dataSource as HikariDataSource).driverClassName)
         val connection = getConnection(dataSource) ?: return null
-        var result = ArrayList<TableField>()
+        val result = ArrayList<TableField>()
         var resultSet: ResultSet? = null
         try {
             val meta = connection.metaData
             resultSet = meta.getColumns(catalog(databaseName), schema, tableName, null)
             while (resultSet.next()) {
-                var tableField = TableField(
+                val tableField = TableField(
                     resultSet.getString(CommonConstant.TABLE_NAME),
                     resultSet.getString(CommonConstant.COLUMN_NAME),
                     resultSet.getString(CommonConstant.REMARKS),
@@ -148,21 +148,19 @@ class DatabaseService : DatabaseService {
     }
 
     override fun close(connection: Connection?, ps: Statement?, rs: ResultSet?) {
-        @Suppress("NAME_SHADOWING") var connection = connection
-        var statement = ps
-        var resultSet = rs
+        @Suppress("NAME_SHADOWING") val connection = connection
         //关闭ResultSet
-        if (resultSet != null) {
+        if (rs != null) {
             try {
-                resultSet.close()
+                rs.close()
             } catch (e: SQLException) {
                 logger.error(e.message)
             }
         }
         //关闭PreparedStatement
-        if (statement != null) {
+        if (ps != null) {
             try {
-                statement.close()
+                ps.close()
             } catch (e: SQLException) {
                 logger.error(e.message)
             }
@@ -182,12 +180,12 @@ class DatabaseService : DatabaseService {
      * 生成 DDL 语句
      */
     fun generateDDL(table: String): String? {
-        var fields = getTableFields(table)
+        val fields = getTableFields(table)
         return ddl(table, fields)
     }
 
     fun ddl(table: String, fields: List<TableField>?): String {
-        var fieldLines = StringBuilder()
+        val fieldLines = StringBuilder()
         fields?.forEachIndexed { index, fieldInfo ->
             if (index == 0) {
                 val line = "${fieldInfo.fieldName}               STRING COMMENT '${fieldInfo.fieldComment}'"

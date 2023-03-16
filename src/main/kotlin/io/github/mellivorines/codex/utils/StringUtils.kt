@@ -23,7 +23,7 @@ object StringUtils {
     /**
      * 首字母大写
      */
-    fun String.capitalize(): String {
+    private fun String.capitalize(): String {
         val chars = toCharArray()
         chars[0] = chars[0].uppercaseChar()
         return chars.concatToString()
@@ -32,7 +32,7 @@ object StringUtils {
     /**
      * 首字母小写
      */
-    fun String.uncapitalize(): String {
+    private fun String.uncapitalize(): String {
         val chars = toCharArray()
         chars[0] = chars[0].lowercaseChar()
         return chars.concatToString()
