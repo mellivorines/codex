@@ -1,6 +1,8 @@
 server:
   port: 8080
 spring:
+  freemarker:
+    check-template-location: false
   datasource:
     #mysql
     #备注：Mysql版本高于8.0.3(包含)会自动添加useInformationSchema=true，低于该版本需要手动添加
@@ -11,14 +13,14 @@ spring:
 
     #postgresql
     #备注：postgresql
-#    url: jdbc:postgresql://localhost:5432/datacenter?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=false
-#    username: root
-#    password: 123456
-#    driver-class-name: org.postgresql.Driver
+    #    url: jdbc:postgresql://localhost:5432/datacenter?useUnicode=true&characterEncoding=utf8&autoReconnect=true&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&useSSL=false
+    #    username: root
+    #    password: 123456
+    #    driver-class-name: org.postgresql.Driver
 
     #oracle
     #备注：remarksReporting=true需设定，保证表的备注能获取
-#    url: jdbc:oracle://localhost:3306/codex?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&remarksReporting=true
-#    username: root
-#    password: 123456
-#    driver-class-name: oracle.jdbc.driver.OracleDriver
+    #    url: jdbc:oracle://localhost:3306/codex?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8&remarksReporting=true
+    #    username: root
+    #    password: 123456
+    #    driver-class-name: oracle.jdbc.driver.OracleDriver
