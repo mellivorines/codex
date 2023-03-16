@@ -13,13 +13,20 @@ import io.github.mellivorines.codex.utils.TemplateUtils
 import io.github.mellivorines.codex.utils.TemplateUtils.getListFromJson
 import org.springframework.stereotype.Service
 import java.io.File
-import java.util.regex.Pattern
+import java.util.regex.*
 import kotlin.io.path.Path
 
 @Service
 class GeneratorServiceService(private var databaseService: DatabaseService) :
     GeneratorService {
 
+    /**
+     * 生成代码
+     * @param [language] 语言
+     * @param [module] 模块
+     * @param [framework] orm框架
+     * @return [List<Table>?]
+     */
     override fun generateModule(language: String?, module: String?, framework: String?): List<Table>? {
         val allTables = fillingTableInfo(databaseService.getAllTables())
         generator(language, module, framework, allTables)
@@ -27,46 +34,23 @@ class GeneratorServiceService(private var databaseService: DatabaseService) :
     }
 
     /**
-     * 生成模块
+     * 生成代码
+     * @param [language] 语言
+     * @param [module] 模块
+     * @param [framework] orm框架
+     * @param [allTables] 所有表
      */
     fun generator(language: String?, module: String?, framework: String?, allTables: List<Table>?) {
-        val dir = if (language == CommonConstant.LANGUAGE_KOTLIN) {
-            CommonConstant.DIR_KOTLIN
-        } else {
-            CommonConstant.DIR_JAVA
-        }
-        val frame = if (language == CommonConstant.LANGUAGE_KOTLIN) {
-            getTemplate()?.kotlin
-        } else {
-            getTemplate()?.java
-        }
+        val dir = if (language == CommonConstant.LANGUAGE_KOTLIN) CommonConstant.DIR_KOTLIN else CommonConstant.DIR_JAVA
+        val frame = if (language == CommonConstant.LANGUAGE_KOTLIN) getTemplate()?.kotlin else getTemplate()?.java
         val templatesInfo = when (framework) {
-            CommonConstant.FRAMEWORK_JIMMER -> {
-                frame?.jimmer
-            }
-
-            CommonConstant.FRAMEWORK_MYBATIS -> {
-                frame?.mybatis
-            }
-
-            CommonConstant.FRAMEWORK_MYBATIS_PLUS -> {
-                frame?.mybatisPlus
-            }
-
-            CommonConstant.FRAMEWORK_MYBATIS_PLUS_MIXED -> {
-                frame?.mybatisPlusMixed
-            }
-
-            CommonConstant.FRAMEWORK_SPRING_DATA_MONGODB -> {
-                frame?.springDataMongodb
-            }
-
-            else -> {
-                frame?.default
-            }
+            CommonConstant.FRAMEWORK_JIMMER -> frame?.jimmer
+            CommonConstant.FRAMEWORK_MYBATIS -> frame?.mybatis
+            CommonConstant.FRAMEWORK_MYBATIS_PLUS -> frame?.mybatisPlus
+            CommonConstant.FRAMEWORK_MYBATIS_PLUS_MIXED -> frame?.mybatisPlusMixed
+            CommonConstant.FRAMEWORK_SPRING_DATA_MONGODB -> frame?.springDataMongodb
+            else -> frame?.default
         }
-
-
         val basePath = SystemUtil.getBasePath(dir)
         val project = getProject2JavaType()
         if (allTables != null && project != null) {
@@ -84,10 +68,17 @@ class GeneratorServiceService(private var databaseService: DatabaseService) :
                     for (temp in templatesInfo) {
                         val createOutFilePath = createOutFilePath(basePath, module, temp.outPath, table.className)
                         val outFilePath = if (temp.templateName.contains(CommonConstant.LANGUAGE_TAG_MAPPER)) {
-                                Path(createOutFilePathForMapper(CommonConstant.DIR_RESOURCE, module, temp.outPath, table.className))
-                            } else {
-                                Path(createOutFilePath)
-                            }
+                            Path(
+                                createOutFilePathForMapper(
+                                    CommonConstant.DIR_RESOURCE,
+                                    module,
+                                    temp.outPath,
+                                    table.className
+                                )
+                            )
+                        } else {
+                            Path(createOutFilePath)
+                        }
                         val templatePath = Path(CommonConstant.DIR_RESOURCE + temp.templateName)
 
                         TemplateUtils.render(outFilePath, templatePath, data)
@@ -98,12 +89,9 @@ class GeneratorServiceService(private var databaseService: DatabaseService) :
         }
     }
 
-     fun createOutFilePathForMapper(dirResource: String, module: String?, outPath: String, className: String): String {
-        val basePath = if (module != null) {
-            dirResource+File.separator+ CommonConstant.LANGUAGE_TAG_MAPPER + File.separator + module
-        } else {
-            dirResource+File.separator
-        }
+    fun createOutFilePathForMapper(dirResource: String, module: String?, outPath: String, className: String): String {
+        val basePath =
+            if (module != null) dirResource + File.separator + CommonConstant.LANGUAGE_TAG_MAPPER + File.separator + module else dirResource + File.separator
         return basePath + File.separator + outPath.replace("{className}", className)
     }
 
@@ -111,11 +99,7 @@ class GeneratorServiceService(private var databaseService: DatabaseService) :
      * 构建文件输出路径
      */
     fun createOutFilePath(basedir: String, module: String?, outPath: String, className: String): String {
-        val basePath = if (module != null) {
-            basedir + File.separator + module
-        } else {
-            basedir
-        }
+        val basePath = if (module != null) basedir + File.separator + module else basedir
         return basePath + File.separator + outPath.replace("{className}", className)
     }
 

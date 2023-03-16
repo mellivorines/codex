@@ -1,11 +1,11 @@
 package io.github.mellivorines.codex.service.impl
 
+import com.zaxxer.hikari.HikariDataSource
 import io.github.mellivorines.codex.constants.CommonConstant
 import io.github.mellivorines.codex.model.database.Table
 import io.github.mellivorines.codex.model.database.TableField
 import io.github.mellivorines.codex.service.DatabaseService
 import io.github.mellivorines.codex.utils.StringUtils.sneak2camel
-import com.zaxxer.hikari.HikariDataSource
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
@@ -65,11 +65,8 @@ class DatabaseService : DatabaseService {
     }
 
     private fun getSchema(driverClassName: String?): String? {
-        return if (driverClassName.equals("org.postgresql.Driver")) {
-            CommonConstant.PUBLIC
-        } else {
-            null
-        }
+        return if (driverClassName.equals("org.postgresql.Driver")) CommonConstant.PUBLIC else null
+
     }
 
     /**
