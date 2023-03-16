@@ -30,6 +30,7 @@ class DatabaseService : DatabaseService {
 
     /**
      * 获取数据库全部表
+     * @return [List<Table>?] 返回所有表信息
      */
     override fun getAllTables(): List<Table>? {
         val databaseName = getDatabaseName(dataSource)
@@ -71,6 +72,8 @@ class DatabaseService : DatabaseService {
 
     /**
      * 获取数据库表所包含的字段
+     * @param [tableName] 表名
+     * @return [List<TableField>?] 表字段信息
      */
     override fun getTableFields(tableName: String): List<TableField>? {
         val databaseName = getDatabaseName(dataSource)
@@ -130,6 +133,8 @@ class DatabaseService : DatabaseService {
 
     /**
      * 获取数据库名称
+     * @param [dataSource] 数据源
+     * @return [String] 返回数据库名
      */
     fun getDatabaseName(dataSource: DataSource): String =
         (dataSource as HikariDataSource).jdbcUrl.substringBefore("?").substringAfterLast("/")

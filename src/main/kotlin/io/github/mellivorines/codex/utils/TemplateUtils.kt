@@ -56,7 +56,8 @@ object TemplateUtils {
 
     /**
      * 从指定路径获取JSON并转换为List
-     * @param path json文件路径
+     * @param [path] json文件路径
+     * @return [T?] 范型T
      */
     inline fun <reified T> getListFromJson(path: String?): T? {
         val resource = ClassPathResource(path!!)
@@ -67,8 +68,11 @@ object TemplateUtils {
 
     /**
      * render template file to outFile with context
+     * @param [outFile] 输出的文件
+     * @param [templateFile] 模版文件
+     * @param [context] 数据内容
      */
-     fun render(outFile: Path, templateFile: Path, context: Map<String, Any>) {
+    fun render(outFile: Path, templateFile: Path, context: Map<String, Any>) {
         properties.setProperty(
             RuntimeConstants.FILE_RESOURCE_LOADER_PATH,
             templateFile.parent.absolutePathString()
@@ -88,8 +92,6 @@ object TemplateUtils {
             engine
                 .getTemplate(templateFile.name, StandardCharsets.UTF_8.name())
                 .merge(VelocityContext(context), it)
-
-
         }
     }
 }

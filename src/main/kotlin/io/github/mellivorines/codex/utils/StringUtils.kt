@@ -13,11 +13,7 @@ object StringUtils {
             .filter { it.isNotBlank() }
             .map { it.capitalize() }
             .joinToString("") { it }
-        return if (uncapitalize) {
-            camel.uncapitalize()
-        } else {
-            camel
-        }
+        return if (uncapitalize) camel.uncapitalize() else camel
     }
 
     /**
