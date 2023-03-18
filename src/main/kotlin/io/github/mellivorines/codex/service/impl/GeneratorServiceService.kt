@@ -17,8 +17,7 @@ import java.util.regex.*
 import kotlin.io.path.Path
 
 @Service
-class GeneratorServiceService(private var databaseService: DatabaseService) :
-    GeneratorService {
+class GeneratorServiceService(private var databaseService: DatabaseService) : GeneratorService {
 
     /**
      * 生成代码

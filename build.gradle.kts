@@ -60,7 +60,7 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-tasks.withType<Javadoc>{
+tasks.withType<Javadoc> {
     options.encoding = "UTF-8"
 }
 
@@ -91,10 +91,12 @@ publishing {
                 name.set("codex")
                 description.set("A concise description of my library")
                 url.set("https://github.com/mellivorines/codex.git")
-                properties.set(mapOf(
-                    "myProp" to "value",
-                    "prop.with.dots" to "anotherValue"
-                ))
+                properties.set(
+                    mapOf(
+                        "myProp" to "value",
+                        "prop.with.dots" to "anotherValue"
+                    )
+                )
                 licenses {
                     license {
                         name.set("The Apache License, Version 2.0")
